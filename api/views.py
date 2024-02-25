@@ -62,15 +62,14 @@ def get_interactions(request):
         interactions = f.readlines()
 
     interactions = [parse_interaction(interaction) for interaction in interactions]
-    # interactions = pd.DataFrame(interactions)
+    interactions = pd.DataFrame(interactions)
 
-    # interactions['timestamp'] = pd.to_datetime(interactions['timestamp'])
-    # from_timestamp = pd.to_datetime(request.data["from_timestamp"])
-    # to_timestamp = pd.to_datetime(request.data["to_timestamp"])
-
-    # filtered_interactions = interactions[(interactions['timestamp'] >= from_timestamp) & (interactions['timestamp'] <= to_timestamp)]
+    interactions['timestamp'] = pd.to_datetime(interactions['timestamp'])
+    from_timestamp = pd.to_datetime(request.data.get("from_timestamp", None))
+    to_timestamp = pd.to_datetime(request.data.get("to_timestamp", None))
 
     
+    if from_timestamp is not None: interactions = interactions[(interactions['timestamp'] >= from_timestamp)]
+    if to_timestamp is not None: interactions = interactions[(interactions['timestamp'] <= to_timestamp)]
     print(interactions)
-
-    return Response({'interactions': interactions}, status=status.HTTP_200_OK)
+    return Response({'interactions': interactions.to_dict("index")}, status=status.HTTP_200_OK)
