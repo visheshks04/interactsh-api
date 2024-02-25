@@ -1,0 +1,4 @@
+**/pycache/
+pycache/
+db.sqlite3
+output/
