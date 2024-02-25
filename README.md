@@ -6,7 +6,7 @@
 
 2. Run the image
 
-```sudo docker run interactshapi```
+```sudo docker run -it -p 8000:8000 interactshapi```
 
 ## Endpoints
 
